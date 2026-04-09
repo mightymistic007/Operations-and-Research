@@ -1,0 +1,76 @@
+To get this project running on any machine (your laptop or a lab computer), you need to follow these steps in order. This covers setting up the environment, organizing the files, and launching the application.
+
+1. Prerequisites: Install Python
+Ensure you have Python installed (Version 3.9 to 3.12 is recommended).
+
+Open your terminal (Command Prompt or PowerShell on Windows).
+
+Type python --version. If it shows a version number, you are good to go.
+
+2. Project Folder Setup
+Create a dedicated folder for this project to keep everything organized.
+
+Create a folder named Portfolio_Optimizer.
+
+Inside this folder, create two empty text files:
+
+main.py
+
+app.py
+
+Copy and paste the Engine code into main.py and the Dashboard code into app.py.
+
+3. Install Required Libraries
+You need specific "packages" for the math and the interface to work. Run this command in your terminal inside your project folder:
+
+Bash
+pip install yfinance pandas numpy matplotlib PyPortfolioOpt streamlit plotly
+What these do:
+yfinance: Fetches live stock market data from Yahoo Finance.
+
+PyPortfolioOpt: Performs the complex Markowitz math (Mean-Variance Optimization).
+
+Streamlit: Turns your Python script into a beautiful web dashboard.
+
+Plotly: Handles the interactive "Efficient Frontier" graph.
+
+4. Understanding the Workflow
+To explain this for a presentation or viva, you should understand how the data flows through your system:
+
+Data Ingestion: yfinance pulls 2 years of history for the 5 tickers.
+
+Statistical Analysis: We calculate the Expected Return (how much it might grow) and the Covariance Matrix (how the stocks move together).
+
+Optimization: The Markowitz model finds the "Sharpe Ratio" — the point where you get the most return for the least amount of risk.
+
+Real-Time Loop: The app.py script refreshes every 15 seconds to check if the current market prices have made your portfolio "drift" away from the optimal mix.
+
+5. Running the Application
+You do not run this project by clicking a "Play" button in an IDE like VS Code. You must run it through the Streamlit CLI:
+
+Open your terminal in the project folder.
+
+Run the following command:
+
+Bash
+streamlit run app.py
+A local URL will appear (usually http://localhost:8501). Your browser will open automatically to show the dashboard.
+
+6. How to Use the App
+The Sidebar: Shows the Efficient Frontier. Look for the "Highest" dots; those represent the best possible return-to-risk ratio.
+
+Rebalance Alerts: If a stock is marked "REBALANCE" in red, it means that stock is performing differently than expected, and you should consider adjusting your investment to get back to the 20% target.
+
+Logging: Click the "Log Current Portfolio Performance" button. This creates a file named portfolio_history.csv in your folder. You can open this in Excel later to show your "trading history."
+
+7. Final Checklist for Submission
+requirements.txt: Create a file named requirements.txt and paste these lines inside. This allows others to install everything with one command (pip install -r requirements.txt).
+
+Plaintext
+yfinance
+pandas
+numpy
+PyPortfolioOpt
+streamlit
+plotly
+README.md: Write a short text file explaining that this is a "Real-Time Investment Portfolio Optimizer based on Modern Portfolio Theory."
