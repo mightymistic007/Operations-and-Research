@@ -1,74 +1,70 @@
-# 🏛️ CivicSpend Optimizer: Municipal Budget Allocation Framework
+# 🏥 NurseOptima: Algorithmic Staffing & Compliance Optimizer
 
-The **CivicSpend Optimizer** is a data-driven framework designed to enhance the efficiency of municipal budget allocations by combining unsupervised machine learning with mathematical optimization. 
+**NurseOptima** is an automated healthcare management solution designed to solve complex staffing challenges using **Operations Research (OR)**. [cite_start]By integrating real-world Payroll-Based Journal (PBJ) data with mathematical optimization, the system generates staffing plans that ensure 100% regulatory compliance while minimizing unnecessary labor hours. [cite: 268, 270, 271]
 
 ## 📊 Project Overview
 
-Urban centers often struggle with rigid, historical budgeting processes that fail to reflect current socio-economic needs. This project provides a two-stage analytical solution:
+Healthcare facilities often struggle to balance high-quality patient care with rigid federal staffing requirements. [cite_start]This project provides a sophisticated analytical solution: [cite: 282, 283, 285]
 
-* **Stage 1 (Pattern Discovery):** Uses **K-Means Clustering** to categorize municipal departments based on spending trends and population impact.
-* **Stage 2 (Optimization):** Uses **Linear Programming (Simplex Method)** via **Google OR-Tools** to determine the exact dollar amount each department should receive to maximize overall city utility.
+* [cite_start]**Automated Compliance:** Mathematically ensures all facilities meet the CMS minimum Hours Per Resident Day (HPRD) for RNs, LPNs, and CNAs. [cite: 306, 420]
+* [cite_start]**Operational Efficiency:** Minimizes total labor hours to reduce overutilization and operational costs. [cite: 306, 415]
+* [cite_start]**Data-Driven Insights:** Replaces manual, heuristic scheduling with provably optimal staffing levels derived from real-world datasets. [cite: 289, 549]
 
 ---
 
-## 🧪 Detailed Methodology & Mathematical Formulation
+## 🧪 Methodology & Mathematical Formulation
 
-### 1. Data Preprocessing & Feature Engineering
-The framework utilizes a dataset representing typical municipal sectors: Healthcare, Education, Infrastructure, Public Safety, and Welfare.
-* **Feature Scaling:** Data was normalized using `StandardScaler` to ensure the clustering algorithm wasn't biased by the magnitude of budget figures.
-* **Utility Metric:** A "Utility Score" was derived for each sector based on historical ROI and population reach.
+### 1. Data Cleaning & Aggregation
+[cite_start]The framework processes raw CMS Payroll-Based Journal data (`Nurse_fulldata.csv`) to prepare it for the optimization engine. [cite: 346, 385]
+* [cite_start]**Standardization:** Daily records for over 14,000 facilities are cleaned of missing values and zero-census days. [cite: 350, 401, 402]
+* [cite_start]**Aggregation:** Data is grouped by facility ID (`PROVNUM`) to calculate total resident days and existing staffing hours for the reporting period. [cite: 72, 404]
 
-### 2. Unsupervised Clustering (K-Means)
-K-Means clustering is applied to identify "High-Need" vs. "High-Efficiency" sectors.
-* **Elbow Method:** Used to determine the optimal number of clusters ($k=3$), balancing intra-cluster variance.
-* **Clustering Objective:**
-    $$\text{Minimize } J = \sum_{i=1}^{k} \sum_{x \in C_i} ||x - \mu_i||^2$$
-    Where $\mu_i$ is the centroid of cluster $C_i$.
-
-### 3. Linear Programming Formulation
-The core optimization model maximizes the city’s benefit within a fixed budget $B$.
+### 2. Linear Programming Formulation
+[cite_start]The core optimization model minimizes the total hours ($Z$) for each facility $f$ while satisfying federal "care floor" mandates. [cite: 292, 416]
 
 #### **Decision Variables**
-Let $x_i$ be the budget allocated to sector $i$.
+Let:
+* [cite_start]$x_{RN}$ = Total optimized Registered Nurse hours [cite: 412, 413]
+* [cite_start]$x_{LPN}$ = Total optimized Licensed Practical Nurse hours [cite: 412, 413]
+* [cite_start]$x_{CNA}$ = Total optimized Certified Nursing Assistant hours [cite: 412, 413]
 
 #### **Objective Function**
-Maximize the Total Utility ($Z$):
-$$Z = \sum_{i=1}^{n} U_i \cdot x_i$$
-Where $U_i$ is the utility coefficient for sector $i$.
+Minimize the Total Staffing Hours ($Z$):
+[cite_start]$$Minimize: Z = x_{RN} + x_{LPN} + x_{CNA}$$ [cite: 292, 416]
 
-#### **Constraints**
-* **Total Budget Constraint:** The sum of all allocations cannot exceed available municipal funds ($B$):
-    $$\sum_{i=1}^{n} x_i \leq B$$
-* **Minimum Operational Funding:** Each sector must receive at least a baseline amount to function:
-    $$x_i \geq \text{Min}_i$$
-* **Capacity Constraint:** No sector can receive more than its maximum administrative capacity:
-    $$x_i \leq \text{Max}_i$$
-   .
+#### **Constraints (CMS Regulatory Minimums)**
+[cite_start]Each facility must meet the mandatory HPRD thresholds multiplied by the total resident days ($D$): [cite: 420, 424]
+* [cite_start]**RN Requirement:** $x_{RN} \geq 0.75 \times D$ [cite: 298, 421]
+* [cite_start]**LPN Requirement:** $x_{LPN} \geq 0.55 \times D$ [cite: 298, 422]
+* [cite_start]**CNA Requirement:** $x_{CNA} \geq 2.25 \times D$ [cite: 298, 423]
+* [cite_start]**Non-Negativity:** $x_{RN}, x_{LPN}, x_{CNA} \geq 0$ [cite: 412]
 
 ---
 
-## 🛠️ Tech Stack & Implementation Details
+## 🛠️ Tech Stack & Implementation
 
-* **Language:** Python 3.10+.
-* **Optimization Engine:** `Google OR-Tools` (Linear Solver).
-* **Data Science:** `Scikit-learn` for K-Means and `Pandas` for data manipulation.
-* **Interface:** `Streamlit` was used to build an interactive dashboard where city officials can adjust constraints in real-time.
+* **Language:** Python 3.x
+* [cite_start]**Optimization:** `PuLP` library (Linear Programming Solver) [cite: 20, 389]
+* [cite_start]**Data Manipulation:** `Pandas` and `NumPy` [cite: 20, 387, 388]
+* [cite_start]**Visualization:** `Matplotlib` (Bar charts) and `Pillow` (Interactive Image Viewer) [cite: 20, 390, 436]
 
 ---
 
 ## 📈 Key Results & Evaluation
 
-* **Efficiency Gain:** The optimized model showed a significant increase in total utility compared to equal-weight or historical allocation methods.
-* **Sensitivity Analysis:** The model was tested against varying budget cuts, demonstrating that the Linear Programming model protects "Critical Need" sectors (identified in Stage 1) more effectively than traditional methods.
+* [cite_start]**Compliance Mastery:** The model successfully increased the compliance rate from an initial **4.78%** to a perfect **100%**. [cite: 170, 171, 516]
+* [cite_start]**Understaffing Identification:** The analysis revealed a massive deficit in current staffing, requiring a net increase of **~26.2 million hours** to meet legal safety standards. [cite: 518]
+* [cite_start]**Resource Optimization:** While adding hours where needed, the model also identified thousands of "Overstaffed" instances, allowing for potential reallocation of resources. [cite: 537, 546]
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-CivicSpend-Optimizer
-├── OR_1.IPYNB          # Development Notebook: Clustering & Solver Logic
-├── OR_Final_Report.pdf # Comprehensive research and results analysis
-├── OR_FINAL_REVIEW.pptx# Presentation for municipal stakeholders
-├── OR.docx             # Project documentation and literature survey
-└── README.md           # Documentation (This file)
+Nurse-Staffing-Optimization
+├── OR_1.IPYNB          # Jupyter Notebook: Data Cleaning & PuLP Solver Logic
+├── OR_Final_Report.pdf  # Final academic report (Methodology & Results)
+├── OR_FINAL_REVIEW.pptx # Stakeholder presentation and visualization
+├── OR.docx              # Detailed technical documentation and literature review
+├── final_results.csv    # Final optimized data used for dashboard/reporting
+└── README.md            # Project documentation (This file)
